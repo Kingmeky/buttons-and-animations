@@ -7,6 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -17,8 +19,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -34,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -161,12 +166,14 @@ fun ScreenOne(navController: NavHostController) {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun ScreenTwo(navController: NavHostController) {
+    var expanded by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopAppBar(
@@ -177,10 +184,50 @@ fun ScreenTwo(navController: NavHostController) {
                 }
             }
         )
+
         Spacer(modifier = Modifier.height(16.dp))
-        Text("Screen Two Content")
+
+        Surface(
+            color = MaterialTheme.colorScheme.primary,
+            onClick = { expanded = !expanded }
+        ) {
+            AnimatedContent(
+                targetState = expanded,
+                transitionSpec = {
+                    fadeIn(animationSpec = tween(150, 150)) with
+                            fadeOut(animationSpec = tween(150)) using
+                            SizeTransform { initialSize, targetSize ->
+                                if (targetState) {
+                                    keyframes {
+                                        // Expand horizontally first.
+                                        IntSize(targetSize.width, initialSize.height) at 150
+                                        durationMillis = 300
+                                    }
+                                } else {
+                                    keyframes {
+                                        // Shrink vertically first.
+                                        IntSize(initialSize.width, targetSize.height) at 150
+                                        durationMillis = 300
+                                    }
+                                }
+                            }
+                }
+            ) { targetExpanded ->
+                if (targetExpanded) {
+                    Text("I will be an amazing jetpack composable develope someday", modifier = Modifier.padding(16.dp))
+                } else {
+                    Icon(Icons.Filled.Favorite, contentDescription = "Content Icon")
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = { navController.navigate("screen_three") }) {
+            Text("Go to Screen Three")
+        }
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
