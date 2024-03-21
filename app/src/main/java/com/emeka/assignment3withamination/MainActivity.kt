@@ -107,7 +107,7 @@ fun MainScreen(navController: NavHostController) {
         }
     }
 }
-
+// Adding Animation for button one
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun ScreenOne(navController: NavHostController) {
