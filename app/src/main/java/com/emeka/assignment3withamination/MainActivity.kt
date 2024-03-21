@@ -174,6 +174,25 @@ fun MainScreen(navController: NavHostController) {
                 color = Color.White
             )
         }
+
+        Spacer(modifier = Modifier.height(60.dp))
+
+        Text(
+            text = "Emeka Ekeke",
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black,
+            modifier = Modifier.padding(bottom = 4.dp) // Add bottom padding for spacing
+        )
+        Text(
+            text = "301354233",
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black,
+            modifier = Modifier.padding(bottom = 4.dp) // Add
+        )
+
+
     }
 }
 
@@ -185,7 +204,7 @@ fun MainScreen(navController: NavHostController) {
 fun ScreenOne(navController: NavHostController) {
     Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopAppBar(
@@ -306,7 +325,7 @@ fun ScreenThree(navController: NavHostController) {
 
     Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopAppBar(
@@ -348,8 +367,9 @@ fun ScreenFour(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Gray),
-        horizontalAlignment = Alignment.CenterHorizontally, )
+            .background(Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    )
     {
         Spacer(modifier = Modifier.height(48.dp))
 
@@ -379,7 +399,11 @@ fun ScreenFour(navController: NavHostController) {
                     }
             )
         }
+
     }
+
+
 }
+
 
 
