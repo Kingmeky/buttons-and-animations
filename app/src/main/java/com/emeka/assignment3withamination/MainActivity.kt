@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -229,9 +230,11 @@ fun ScreenTwo(navController: NavHostController) {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenThree(navController: NavHostController) {
+    var clicked by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -246,9 +249,18 @@ fun ScreenThree(navController: NavHostController) {
             }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Text("Screen Three Content")
+
+        Button(
+            onClick = { clicked = !clicked },
+            modifier = Modifier
+                .padding(16.dp)
+                .animateContentSize()
+        ) {
+            Text(if (clicked) "Clicked!" else "Click Me")
+        }
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
