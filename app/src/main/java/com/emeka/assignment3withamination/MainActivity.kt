@@ -8,6 +8,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -15,16 +16,23 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.with
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,11 +44,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -96,23 +109,76 @@ fun MainScreen(navController: NavHostController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = { navController.navigate("screen_one") }) {
-            Text("Screen One")
+        Button(
+            onClick = { navController.navigate("screen_one") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp, horizontal = 16.dp)
+                .background(Color.Black, shape = RoundedCornerShape(16.dp)),
+            elevation = ButtonDefaults.elevatedButtonElevation(8.dp)
+        ) {
+            Text(
+                text = "Screen One",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.White
+            )
         }
+
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { navController.navigate("screen_two") }) {
-            Text("Screen Two")
+
+        Button(
+            onClick = { navController.navigate("screen_two") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp, horizontal = 16.dp)
+                .background(Color.Black, shape = RoundedCornerShape(16.dp)),
+            elevation = ButtonDefaults.elevatedButtonElevation(8.dp)
+        ) {
+            Text(
+                text = "Screen Two",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.White
+            )
         }
+
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { navController.navigate("screen_three") }) {
-            Text("Screen Three")
+
+        Button(
+            onClick = { navController.navigate("screen_three") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp, horizontal = 16.dp)
+                .background(Color.Black, shape = RoundedCornerShape(16.dp)),
+            elevation = ButtonDefaults.elevatedButtonElevation(8.dp)
+        ) {
+            Text(
+                text = "Screen Three",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.White
+            )
         }
+
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { navController.navigate("screen_four") }) {
-            Text("Screen Four")
+
+        Button(
+            onClick = { navController.navigate("screen_four") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp, horizontal = 16.dp)
+                .background(Color.Black, shape = RoundedCornerShape(16.dp)),
+            elevation = ButtonDefaults.elevatedButtonElevation(8.dp)
+        ) {
+            Text(
+                text = "Screen Four",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.White
+            )
         }
     }
 }
+
+
+
 // Adding Animation for button one
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
@@ -217,7 +283,10 @@ fun ScreenTwo(navController: NavHostController) {
                 if (targetExpanded) {
                     Text("I will be an amazing jetpack composable develope someday", modifier = Modifier.padding(16.dp))
                 } else {
-                    Icon(Icons.Filled.Favorite, contentDescription = "Content Icon")
+                    Icon(
+                        Icons.Filled.Favorite,
+                        contentDescription = "Content Icon",
+                        modifier = Modifier.size(72.dp))
                 }
             }
         }
@@ -262,24 +331,55 @@ fun ScreenThree(navController: NavHostController) {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenFour(navController: NavHostController) {
+    var isRotating by remember { mutableStateOf(false) }
+
+    // Track whether the button is currently being touched
+    val touching = rememberUpdatedState(isRotating)
+
+    // Animate rotation angle when the button is being touched
+    val animatedRotation by animateFloatAsState(
+        targetValue = if (touching.value) 360f else 0f,
+        animationSpec = tween(durationMillis = 1000), label = ""
+    )
+
+
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        TopAppBar(
-            title = { Text("Screen Four") },
-            navigationIcon = {
-                IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
-                }
-            }
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Gray),
+        horizontalAlignment = Alignment.CenterHorizontally, )
+    {
+        Spacer(modifier = Modifier.height(48.dp))
+
+
+        Text(
+            text = "Screen 4",
+            fontWeight = FontWeight.Bold,
+            fontSize = 32.sp,
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text("Screen Four Content")
+
+
+        Spacer(modifier = Modifier.height(72.dp))
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.Favorite,
+                contentDescription = "Heart",
+                modifier = Modifier
+                    .size(130.dp)
+                    .rotate(animatedRotation)
+                    .clickable {
+                        // Toggle the rotating state on button click
+                        isRotating = !isRotating
+                    }
+            )
+        }
     }
 }
+
 
